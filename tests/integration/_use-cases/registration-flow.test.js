@@ -1,4 +1,5 @@
 import orchestrator from "tests/orchestrator.js";
+import activation from "models/activation";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
@@ -8,6 +9,8 @@ beforeAll(async () => {
 });
 
 describe("Usec case: Registration flow (all successfull)", () => {
+  let createUserResponseBody;
+
   test("Create User account", async () => {
     const createUserResponse = await fetch(
       "http://localhost:3000/api/v1/users",
@@ -26,7 +29,7 @@ describe("Usec case: Registration flow (all successfull)", () => {
 
     expect(createUserResponse.status).toBe(201);
 
-    const createUserResponseBody = await createUserResponse.json();
+    createUserResponseBody = await createUserResponse.json();
 
     expect(createUserResponseBody).toEqual({
       id: createUserResponseBody.id,
@@ -41,10 +44,16 @@ describe("Usec case: Registration flow (all successfull)", () => {
 
   test("Receive activation email", async () => {
     const lastEmail = await orchestrator.getLastEmail();
+
+    const activationToken = await activation.findOneByUserId(
+      createUserResponseBody.id,
+    );
+
     expect(lastEmail.sender).toBe("<contato@war.com>");
     expect(lastEmail.recipients[0]).toBe("<registration.flow@war.com>");
     expect(lastEmail.subject).toBe("Confirmação de cadastro");
     expect(lastEmail.text).toContain("RegistrationFlow");
+    expect(lastEmail.text).toContain(activationToken.id);
   });
 
   test("Activate account", async () => {});
