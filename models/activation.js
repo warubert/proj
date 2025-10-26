@@ -1,6 +1,7 @@
 import email from "infra/email.js";
 import database from "infra/database";
 import webserver from "infra/webserver.js";
+import user from "models/user.js";
 import { NotFoundError } from "infra/errors";
 
 const EXPIRATION_IN_MILLISECONDS = 60 * 15 * 1000; // 15 minutos
@@ -96,11 +97,37 @@ Equipe War`,
   });
 }
 
+async function markTokenAsUsed(activationTokenId) {
+  const results = await database.query({
+    text: `
+        UPDATE
+          user_activation_tokens
+        SET
+          used_at = timezone('utc', now()),
+          updated_at = timezone('utc', now())
+        WHERE
+          id = $1
+        RETURNING
+          *
+      ;`,
+    values: [activationTokenId],
+  });
+
+  return results.rows[0];
+}
+
+async function activateUserByUserId(userId) {
+  const activatedUser = await user.setFeatures(userId, ["create:session"]);
+  return activatedUser;
+}
+
 const activation = {
   sendEmailToUser,
   create,
   findOneByUserId,
   findOneValidById,
+  markTokenAsUsed,
+  activateUserByUserId,
 };
 
 export default activation;

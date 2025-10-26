@@ -33,7 +33,7 @@ async function findOneById(userId) {
   }
 }
 
-async function findOneByUsername(username) {
+async function findOneByUserName(username) {
   const userFound = await runSelectQuery(username);
 
   return userFound;
@@ -129,7 +129,7 @@ async function create(userInputValues) {
 }
 
 async function update(username, userInputValues) {
-  const currentUser = await findOneByUsername(username);
+  const currentUser = await findOneByUserName(username);
 
   if ("email" in userInputValues) {
     await validateUniqueEmail(userInputValues.email);
@@ -219,12 +219,37 @@ async function hashPasswordInObject(userInputValues) {
   userInputValues.password = hashedPassword;
 }
 
+async function setFeatures(userId, features) {
+  const updatedUser = await runUpdateQuery(userId, features);
+  return updatedUser;
+
+  async function runUpdateQuery(userId, features) {
+    const results = await database.query({
+      text: `
+      UPDATE
+        users
+      SET
+        features = $2,
+        updated_at = timezone('utc', now())
+      WHERE
+        id = $1
+      RETURNING
+        *
+      ;`,
+      values: [userId, features],
+    });
+
+    return results.rows[0];
+  }
+}
+
 const user = {
   create,
-  findOneByUsername,
+  findOneByUserName,
   update,
   findOneByEmail,
   findOneById,
+  setFeatures,
 };
 
 export default user;
