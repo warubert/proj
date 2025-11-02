@@ -187,7 +187,7 @@ describe("PATCH /api/v1/users/[username]", () => {
       expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
       expect(responseBody.updated_at > responseBody.created_at).toBe(true);
 
-      const userInDatabase = await user.findOneByUsername(userCreated.username);
+      const userInDatabase = await user.findOneByUserName(userCreated.username);
       const correctPasswordMatch = await password.compare(
         "newPassword",
         userInDatabase.password,
