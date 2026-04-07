@@ -47,7 +47,7 @@ describe("Usec case: Registration flow (all successfull)", () => {
   test("Receive activation email", async () => {
     const lastEmail = await orchestrator.getLastEmail();
 
-    expect(lastEmail.sender).toBe("<contato@war.com>");
+    expect(lastEmail.sender).toBe("<noreply@warubert.com.br>");
     expect(lastEmail.recipients[0]).toBe("<registration.flow@war.com>");
     expect(lastEmail.subject).toBe("Confirmação de cadastro");
     expect(lastEmail.text).toContain("RegistrationFlow");
