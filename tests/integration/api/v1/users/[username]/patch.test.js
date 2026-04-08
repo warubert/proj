@@ -209,15 +209,14 @@ describe("PATCH /api/v1/users/[username]", () => {
       expect(responseBody.updated_at > responseBody.created_at).toBe(true);
     });
 
-    test("With unique email", async () => {
-      const user = await orchestrator.createUser({
-        email: "uniqueemail@war.com",
-      });
-      const activatedUser = await orchestrator.activateUser(user);
+    test("With unique `email`", async () => {
+      const createdUser = await orchestrator.createUser();
+      const activatedUser = await orchestrator.activateUser(createdUser);
       const sessionObject = await orchestrator.createSession(activatedUser.id);
 
-      const response2 = await fetch(
-        `${webserver.origin}/api/v1/users/${user.username}`,
+      const response = await fetch(
+        `${webserver.origin}/api/v1/users/${createdUser.username}`,
+
         {
           method: "PATCH",
           headers: {
@@ -225,17 +224,18 @@ describe("PATCH /api/v1/users/[username]", () => {
             Cookie: `session_id=${sessionObject.token}`,
           },
           body: JSON.stringify({
-            email: "uniqueemail2@war.com",
+            email: "uniqueEmail2@curso.dev",
           }),
         },
       );
-      expect(response2.status).toBe(200);
 
-      const responseBody = await response2.json();
+      expect(response.status).toBe(200);
+
+      const responseBody = await response.json();
 
       expect(responseBody).toEqual({
         id: responseBody.id,
-        username: user.username,
+        username: createdUser.username,
         features: ["create:session", "read:session", "update:user"],
         created_at: responseBody.created_at,
         updated_at: responseBody.updated_at,
@@ -244,7 +244,12 @@ describe("PATCH /api/v1/users/[username]", () => {
       expect(uuidVersion(responseBody.id)).toBe(4);
       expect(Date.parse(responseBody.created_at)).not.toBeNaN();
       expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
+
       expect(responseBody.updated_at > responseBody.created_at).toBe(true);
+
+      const userInDatabase = await user.findOneByUserName(createdUser.username);
+
+      expect(userInDatabase.email).toBe("uniqueEmail2@curso.dev");
     });
 
     test("With new password", async () => {
