@@ -1,4 +1,5 @@
 import orchestrator from "tests/orchestrator.js";
+import webserver from "infra/webserver";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
@@ -16,15 +17,12 @@ describe("POST /api/v1/migrations", () => {
           activatedUser.id,
         );
 
-        const response1 = await fetch(
-          "http://localhost:3000/api/v1/migrations",
-          {
-            method: "POST",
-            headers: {
-              Cookie: `session_id=${sessionObject.token}`,
-            },
+        const response1 = await fetch(`${webserver.origin}/api/v1/migrations`, {
+          method: "POST",
+          headers: {
+            Cookie: `session_id=${sessionObject.token}`,
           },
-        );
+        });
 
         expect(response1.status).toBe(403);
 
@@ -50,15 +48,12 @@ describe("POST /api/v1/migrations", () => {
           activatedUser.id,
         );
 
-        const response1 = await fetch(
-          "http://localhost:3000/api/v1/migrations",
-          {
-            method: "POST",
-            headers: {
-              Cookie: `session_id=${sessionObject.token}`,
-            },
+        const response1 = await fetch(`${webserver.origin}/api/v1/migrations`, {
+          method: "POST",
+          headers: {
+            Cookie: `session_id=${sessionObject.token}`,
           },
-        );
+        });
         expect(response1.status).toBe(403);
 
         const responseBody1 = await response1.json();
@@ -83,15 +78,12 @@ describe("POST /api/v1/migrations", () => {
         const sessionObject = await orchestrator.createSession(
           activatedUser.id,
         );
-        const response1 = await fetch(
-          "http://localhost:3000/api/v1/migrations",
-          {
-            method: "POST",
-            headers: {
-              Cookie: `session_id=${sessionObject.token}`,
-            },
+        const response1 = await fetch(`${webserver.origin}/api/v1/migrations`, {
+          method: "POST",
+          headers: {
+            Cookie: `session_id=${sessionObject.token}`,
           },
-        );
+        });
         expect(response1.status).toBe(200);
 
         const responseBody1 = await response1.json();
