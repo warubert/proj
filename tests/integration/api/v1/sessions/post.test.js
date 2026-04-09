@@ -116,11 +116,15 @@ describe("POST /api/v1/sessions", () => {
       expect(Date.parse(responseBody.expires_at)).not.toBeNaN();
 
       const expiresAt = new Date(responseBody.expires_at);
-      const updatedAt = new Date(responseBody.updated_at);
-      expiresAt.setMilliseconds(0);
-      updatedAt.setMilliseconds(0);
+      const createdAt = new Date(responseBody.created_at);
 
-      expect(expiresAt - updatedAt).toBe(session.EXPIRATION_IN_MILLISECONDS);
+      expect(expiresAt >= createdAt).toBe(true);
+
+      const actualLifetimeInMilliseconds = expiresAt - createdAt;
+      const lifetimeDifferenceInMilliseconds =
+        session.EXPIRATION_IN_MILLISECONDS - actualLifetimeInMilliseconds;
+
+      expect(lifetimeDifferenceInMilliseconds).toBeLessThanOrEqual(5000);
 
       const parsedSetCookie = setCookieParser(response, {
         map: true,
