@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function RegisterPage() {
   console.log("RegisterPage rendered");
@@ -6,18 +6,27 @@ export default function RegisterPage() {
   const [newCount, setNewCount] = useState(0);
 
   let count = 0;
-  console.log("Count:", count);
-  console.log("newCount:", newCount);
 
   function incrementCount() {
     count++;
-    console.log("Count incremented:", count);
   }
 
   function incrementNewCount() {
     setNewCount(newCount + 1);
-    console.log("newCount incremented:", newCount + 1);
   }
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      console.log("[SetInterval] Count:", count, "| New Count:", newCount);
+      console.log("");
+    }, 2000);
+
+    return () => {
+      console.log("[CleanUp] Isso vai ser impresso antes do proximo setup");
+      console.log("[CleanUp] Count:", count, "| New Count:", newCount);
+      clearInterval(intervalId);
+    };
+  }, [newCount]);
 
   return (
     <>
