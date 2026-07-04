@@ -26,6 +26,7 @@ export default function RegisterPage() {
       console.log("[CleanUp] Count:", count, "| New Count:", newCount);
       clearInterval(intervalId);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newCount]);
 
   return (
