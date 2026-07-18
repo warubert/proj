@@ -1,64 +1,67 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function RegisterPage() {
   console.log("RegisterPage rendered");
 
-  const [newCount, setNewCount] = useState(0);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  let count = 0;
+  async function handleSubmit(event) {
+    event.preventDefault();
 
-  function incrementCount() {
-    count++;
+    const requestBody = { username, email, password };
+
+    const response = await fetch("/api/v1/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    if (response.status === 201) {
+      location.href = "/cadastro/confirmar";
+    }
   }
-
-  function incrementNewCount() {
-    setNewCount(newCount + 1);
-  }
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      console.log("[SetInterval] Count:", count, "| New Count:", newCount);
-      console.log("");
-    }, 2000);
-
-    return () => {
-      console.log("[CleanUp] Isso vai ser impresso antes do proximo setup");
-      console.log("[CleanUp] Count:", count, "| New Count:", newCount);
-      clearInterval(intervalId);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newCount]);
-
   return (
     <>
-      <h1>Count: {count}</h1>
-      <button onClick={incrementCount}>Increment count</button>
-      <h1>New Count: {newCount}</h1>
-      <button onClick={incrementNewCount}>Increment new count</button>
       <h1>Cadastro</h1>
-      <hr />
-      <ComponenteA />
-      <ComponenteB />
-    </>
-  );
-}
 
-function ComponenteA() {
-  console.log("ComponenteA rendered");
+      <form onSubmit={handleSubmit}>
+        <div>
+          Nome de usuário:
+          <input
+            type="text"
+            value={username}
+            onChange={(event) => {
+              setUsername(event.target.value);
+            }}
+          />
+        </div>
+        <div>
+          E-mail:
+          <input
+            type="email"
+            value={email}
+            onChange={(event) => {
+              setEmail(event.target.value);
+            }}
+          />
+        </div>
+        <div>
+          Senha:
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => {
+              setPassword(event.target.value);
+            }}
+          />
+        </div>
 
-  return (
-    <>
-      <h2>Componente A</h2>
-    </>
-  );
-}
-
-function ComponenteB() {
-  console.log("ComponenteB rendered");
-
-  return (
-    <>
-      <h2>Componente B</h2>
+        <button type="submit">Cadastrar</button>
+      </form>
     </>
   );
 }
