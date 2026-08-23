@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "@primer/react";
+import DefaultLayout from "interface/DefaultLayout";
 
 export default function RegisterPage() {
   console.log("RegisterPage rendered");
@@ -26,7 +26,12 @@ export default function RegisterPage() {
     }
   }
   return (
-    <>
+    <DefaultLayout
+      metadata={{
+        title: "Cadastro",
+        description: "Crie sua conta de forma gratuita.",
+      }}
+    >
       <h1>Cadastro</h1>
 
       <form onSubmit={handleSubmit}>
@@ -60,9 +65,7 @@ export default function RegisterPage() {
             }}
           />
         </div>
-
-        <Button type="submit">Cadastrar</Button>
       </form>
-    </>
+    </DefaultLayout>
   );
 }

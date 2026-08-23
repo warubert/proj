@@ -1,5 +1,15 @@
+import DefaultLayout from "interface/DefaultLayout";
+
 function Home() {
-  return <h1>Teste</h1>;
+  return (
+    <DefaultLayout
+      metadata={{
+        description: "Bem-vindo ao Proj.",
+      }}
+    >
+      <h1>Teste</h1>
+    </DefaultLayout>
+  );
 }
 
 export default Home;
