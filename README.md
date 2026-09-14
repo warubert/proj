@@ -6,18 +6,18 @@ Clone do [TabNews](https://www.tabnews.com.br) desenvolvido durante o curso [cur
 
 ## 🚀 Tecnologias
 
-| Camada | Tecnologia |
-|---|---|
-| Framework | [Next.js 16](https://nextjs.org/) + [React 19](https://react.dev/) |
-| Banco de dados | [PostgreSQL 16](https://www.postgresql.org/) |
-| Migrations | [node-pg-migrate](https://github.com/salsita/node-pg-migrate) |
-| Autenticação | Cookie de sessão + [bcryptjs](https://github.com/dcodeIO/bcrypt.js) |
-| E-mail | [Nodemailer](https://nodemailer.com/) + [MailCatcher](https://mailcatcher.me/) |
-| Data fetching | [SWR](https://swr.vercel.app/) |
-| Testes | [Jest](https://jestjs.io/) + [@faker-js/faker](https://fakerjs.dev/) |
-| Infra local | [Docker](https://www.docker.com/) (Compose) |
-| Linting | [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/) |
-| Commits | [Husky](https://typicode.github.io/husky/) + [Commitlint](https://commitlint.js.org/) + [Commitizen](https://commitizen-tools.github.io/commitizen/) |
+| Camada         | Tecnologia                                                                                                                                           |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Framework      | [Next.js 16](https://nextjs.org/) + [React 19](https://react.dev/)                                                                                   |
+| Banco de dados | [PostgreSQL 16](https://www.postgresql.org/)                                                                                                         |
+| Migrations     | [node-pg-migrate](https://github.com/salsita/node-pg-migrate)                                                                                        |
+| Autenticação   | Cookie de sessão + [bcryptjs](https://github.com/dcodeIO/bcrypt.js)                                                                                  |
+| E-mail         | [Nodemailer](https://nodemailer.com/) + [MailCatcher](https://mailcatcher.me/)                                                                       |
+| Data fetching  | [SWR](https://swr.vercel.app/)                                                                                                                       |
+| Testes         | [Jest](https://jestjs.io/) + [@faker-js/faker](https://fakerjs.dev/)                                                                                 |
+| Infra local    | [Docker](https://www.docker.com/) (Compose)                                                                                                          |
+| Linting        | [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/)                                                                                     |
+| Commits        | [Husky](https://typicode.github.io/husky/) + [Commitlint](https://commitlint.js.org/) + [Commitizen](https://commitizen-tools.github.io/commitizen/) |
 
 ---
 
@@ -36,7 +36,7 @@ Clone do [TabNews](https://www.tabnews.com.br) desenvolvido durante o curso [cur
 
 ## 📁 Estrutura do projeto
 
-```
+```bash
 .
 ├── infra/
 │   ├── compose.yaml        # PostgreSQL + MailCatcher via Docker
@@ -74,18 +74,18 @@ Clone do [TabNews](https://www.tabnews.com.br) desenvolvido durante o curso [cur
 
 ## 🔌 API — Endpoints
 
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| `GET` | `/api/v1/status` | Status e métricas do banco de dados |
-| `POST` | `/api/v1/users` | Criar novo usuário (envia e-mail de ativação) |
-| `GET` | `/api/v1/users/:username` | Buscar usuário por username (público) |
-| `PATCH` | `/api/v1/users/:username` | Atualizar dados do usuário (autenticado) |
-| `GET` | `/api/v1/user` | Dados do usuário autenticado (email incluso) |
-| `POST` | `/api/v1/sessions` | Login (cria sessão e define cookie) |
-| `DELETE` | `/api/v1/sessions` | Logout (expira sessão e limpa cookie) |
-| `PATCH` | `/api/v1/activations/:token_id` | Ativar conta via token de e-mail |
-| `GET` | `/api/v1/migrations` | Listar migrações pendentes |
-| `POST` | `/api/v1/migrations` | Executar migrações pendentes |
+| Método   | Rota                            | Descrição                                     |
+| -------- | ------------------------------- | --------------------------------------------- |
+| `GET`    | `/api/v1/status`                | Status e métricas do banco de dados           |
+| `POST`   | `/api/v1/users`                 | Criar novo usuário (envia e-mail de ativação) |
+| `GET`    | `/api/v1/users/:username`       | Buscar usuário por username (público)         |
+| `PATCH`  | `/api/v1/users/:username`       | Atualizar dados do usuário (autenticado)      |
+| `GET`    | `/api/v1/user`                  | Dados do usuário autenticado (email incluso)  |
+| `POST`   | `/api/v1/sessions`              | Login (cria sessão e define cookie)           |
+| `DELETE` | `/api/v1/sessions`              | Logout (expira sessão e limpa cookie)         |
+| `PATCH`  | `/api/v1/activations/:token_id` | Ativar conta via token de e-mail              |
+| `GET`    | `/api/v1/migrations`            | Listar migrações pendentes                    |
+| `POST`   | `/api/v1/migrations`            | Executar migrações pendentes                  |
 
 ---
 
@@ -122,6 +122,7 @@ npm run dev
 ```
 
 Esse comando:
+
 1. Sobe o **PostgreSQL** e o **MailCatcher** via Docker
 2. Aguarda o banco de dados estar disponível
 3. Executa todas as **migrações** pendentes
